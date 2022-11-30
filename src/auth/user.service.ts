@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { PrismaService } from './prisma.service';
+import { PrismaService } from '../prisma.service';
 import { User, Prisma } from '@prisma/client';
 import * as bcrypt from "bcrypt";
 import * as jwt from 'jsonwebtoken';
@@ -36,7 +36,7 @@ export class UserService {
     async createUser(data: Prisma.UserCreateInput): Promise<User> {
         let foundUser = await this.prisma.user.findFirst({
             where: {
-                email:data.email
+                email: data.email
             }
         })
 
@@ -46,18 +46,17 @@ export class UserService {
 
         const salt = await bcrypt.genSalt();
         data.password = await bcrypt.hash(data.password, salt);
-        return this.prisma.user.create({
+        return await this.prisma.user.create({
             data
         })
 
     }
 
     // User login api
-
     async login(data: { email?: string; password: any; }): Promise<any> {
         let find_user = await this.prisma.user.findFirst({
             where: {
-                email:data.email
+                email: data.email
             }
         })
 
@@ -81,12 +80,6 @@ export class UserService {
         }
 
     }
-
-
-
-
-
-
 
 
 }

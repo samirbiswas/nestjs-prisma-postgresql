@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:1234@localhost:5432/NewDB?schema=sample"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -12,7 +12,7 @@ model User {
   email String @unique
   name  String
   password  String
-  role Role @default(SUPERADMIN)
+  role Role @default(USER)
 }
 
 enum Role {
